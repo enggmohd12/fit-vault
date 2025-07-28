@@ -1,3 +1,4 @@
+import 'package:fitvault/views/bmi_calculator/bmi_calculator_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,31 +11,45 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Fit Vault',
+        primaryColor: Color(0xFF283593), // Deep Blue
+        colorScheme:
+            ColorScheme.fromSwatch(
+              primarySwatch: Colors.indigo,
+              accentColor: Color(0xFF6A1B9A), // Indigo/Purple
+              backgroundColor: Color(0xFFF3F3FC), // Very light purple
+            ).copyWith(
+              secondary: Color(0xFF6A1B9A),
+              surface: Color(0xFFF3F3FC),
+              brightness: Brightness.light,
+            ),
+        scaffoldBackgroundColor: Color(0xFFF3F3FC),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xFF283593),
+          foregroundColor: Colors.white,
+          elevation: 4.0,
+          iconTheme: IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF6A1B9A),
+          foregroundColor: Colors.white,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF283593),
+            foregroundColor: Colors.white,
+          ),
         ),
       ),
-      body: Center(
-        child: Text('Hello, Flutter!'),
-      ),
+      home: BMICalculatorView(),
     );
   }
 }
+
+
