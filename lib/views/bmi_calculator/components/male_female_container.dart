@@ -21,8 +21,8 @@ class MaleFemaleContainer extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: size.width * 0.4,
-        width: size.width * 0.4,
+        height:size.width > 800 ? size.width * 0.25 :  size.width * 0.4,
+        width: size.width > 800 ? size.width * 0.25 : size.width * 0.4,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
