@@ -1,4 +1,5 @@
-import 'package:fitvault/views/bmi_calculator/components/age_scale_widget.dart' show AgeInYrWidget;
+import 'package:fitvault/views/bmi_calculator/components/age_scale_widget.dart'
+    show AgeInYrWidget;
 import 'package:fitvault/views/bmi_calculator/components/height_scale_wiget.dart';
 import 'package:fitvault/views/bmi_calculator/components/male_female_container.dart';
 import 'package:fitvault/views/bmi_calculator/components/weight_scale_widget.dart';
@@ -17,7 +18,7 @@ class BMICalculatorView extends StatefulWidget {
 class _BMICalculatorViewState extends State<BMICalculatorView> {
   bool isSelected = true;
   double currentWeightInKilogram = 50.0;
-  double currentHeightInKilogram = 60;
+  double currentHeightinInches = 60;
   double currentAgeInYr = 25.0;
   late final ScaleController _unitController;
   late final ScaleUnit _scaleUnit;
@@ -32,7 +33,7 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
     _scaleUnit = UnitType.weight.kilogram;
     _unitController = ScaleController(value: currentWeightInKilogram);
     _scaleUnitHeight = UnitType.length.inch;
-    _unitHeightController = ScaleController(value: currentHeightInKilogram);
+    _unitHeightController = ScaleController(value: currentHeightinInches);
     _scaleUnitAge = UnitType.weight.kilogram;
     _unitAgeController = ScaleController(value: currentAgeInYr);
     super.initState();
@@ -46,6 +47,8 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
         title: GestureDetector(
           onLongPress: () {
             // print('Long Pressed on FitVault');
+            final size = MediaQuery.of(context).size;
+            print(size.width);
           },
           child: RichText(
             text: TextSpan(
@@ -156,10 +159,10 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                         isDarkTheme: false,
                         unitController: _unitHeightController,
                         scaleUnit: _scaleUnitHeight,
-                        currentHeightInKilogram: currentHeightInKilogram,
+                        currentHeightinInches: currentHeightinInches,
                         onWeightChanged: (p0) {
                           setState(() {
-                            currentHeightInKilogram = p0.toDouble();
+                            currentHeightinInches = p0.toDouble();
                           });
                         },
                       ),
@@ -167,6 +170,65 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                     ],
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: size.width * 0.85,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF3F51B5), // Indigo 500
+                        Color(0xFF512DA8), // Deep Purple 700
+                      ],
+                    ),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      final heightInMeters = currentHeightinInches * 0.0254;
+                      final weightInKg = currentWeightInKilogram;
+                      final bmi =
+                          weightInKg / (heightInMeters * heightInMeters);
+                      final bmiRounded = bmi.toStringAsFixed(2);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Your BMI'),
+                            content: Text(
+                              'Your BMI is $bmiRounded',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Calculate BMI',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: size.width > 800 ? 24 : 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
