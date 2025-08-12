@@ -27,8 +27,10 @@ class AgeInYrWidget extends StatelessWidget {
         : Colors.white;
     final textColor = isDarkTheme ? Colors.grey : Colors.black54;
 
-    double boxSize =
-        MediaQuery.of(context).size.width * 0.39; // 70% of screen width
+    final size = MediaQuery.of(context).size;
+
+    double boxSize = size.width > 800 ? size.width * 0.25 : 
+       size.width * 0.39; // 70% of screen width
 
     return Center(
       child: Container(
