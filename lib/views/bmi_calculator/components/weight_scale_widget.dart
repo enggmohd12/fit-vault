@@ -26,9 +26,10 @@ class WeightInKgNew extends StatelessWidget {
         ? darkThemeColor
         : Colors.white;
     final textColor = isDarkTheme ? Colors.grey : Colors.black54;
+    final size = MediaQuery.of(context).size;
 
-    double boxSize =
-        MediaQuery.of(context).size.width * 0.39; // 70% of screen width
+    double boxSize = size.width > 800 ? size.width * 0.25 : 
+       size.width * 0.39; // 70% of screen width
 
     return Center(
       child: Container(
