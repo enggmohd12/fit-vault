@@ -28,7 +28,7 @@ class WeightInKgNew extends StatelessWidget {
     final textColor = isDarkTheme ? Colors.grey : Colors.black54;
 
     double boxSize =
-        MediaQuery.of(context).size.width * 0.41; // 70% of screen width
+        MediaQuery.of(context).size.width * 0.39; // 70% of screen width
 
     return Center(
       child: Container(
@@ -92,7 +92,7 @@ class WeightInKgNew extends StatelessWidget {
                     color: Colors.indigo,
                   ),
                   scaleMarkerPositionTop: 0,
-                  scaleMarkerPositionLeft: boxSize / 2,
+                  scaleMarkerPositionLeft: boxSize / 1.95,
                   scaleIntervalText: (index, value) => value.toInt().toString(),
                   scaleIntervalTextStyle: TextStyle(
                     color: textColor,
