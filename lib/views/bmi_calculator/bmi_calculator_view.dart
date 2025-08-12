@@ -1,3 +1,5 @@
+import 'package:fitvault/views/bmi_calculator/components/age_scale_widget.dart' show AgeInYrWidget;
+import 'package:fitvault/views/bmi_calculator/components/height_scale_wiget.dart';
 import 'package:fitvault/views/bmi_calculator/components/male_female_container.dart';
 import 'package:fitvault/views/bmi_calculator/components/weight_scale_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +17,24 @@ class BMICalculatorView extends StatefulWidget {
 class _BMICalculatorViewState extends State<BMICalculatorView> {
   bool isSelected = true;
   double currentWeightInKilogram = 50.0;
+  double currentHeightInKilogram = 60;
+  double currentAgeInYr = 25.0;
   late final ScaleController _unitController;
   late final ScaleUnit _scaleUnit;
+  late final ScaleController _unitHeightController;
+  late final ScaleUnit _scaleUnitHeight;
+  late ScaleController _unitAgeController;
+  late ScaleUnit _scaleUnitAge;
   double value = 4.0;
 
   @override
   void initState() {
     _scaleUnit = UnitType.weight.kilogram;
     _unitController = ScaleController(value: currentWeightInKilogram);
+    _scaleUnitHeight = UnitType.length.inch;
+    _unitHeightController = ScaleController(value: currentHeightInKilogram);
+    _scaleUnitAge = UnitType.weight.kilogram;
+    _unitAgeController = ScaleController(value: currentAgeInYr);
     super.initState();
   }
 
@@ -95,7 +107,7 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                   ),
                   MaleFemaleContainer(
                     gender: 'Female',
-                    icon: FontAwesomeIcons.mars,
+                    icon: FontAwesomeIcons.venus,
                     isSelected: !isSelected,
                     onTap: () {
                       setState(() {
@@ -114,17 +126,42 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
               Column(
                 children: [
                   Row(
-                    spacing: 10,
+                    spacing: 15,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      WeightInKgNew(
+                      Column(
+                        spacing: 15,
+                        children: [
+                          WeightInKgNew(
+                            isDarkTheme: false,
+                            currentWeightInKilogram: currentWeightInKilogram,
+                            scaleUnit: _scaleUnit,
+                            unitController: _unitController,
+                            onWeightChanged: (value) => setState(
+                              () => currentWeightInKilogram = value.toDouble(),
+                            ),
+                          ),
+                          AgeInYrWidget(
+                            isDarkTheme: false,
+                            unitController: _unitAgeController,
+                            scaleUnit: _scaleUnitAge,
+                            currentAgeInYr: currentAgeInYr,
+                            onAgeChanged: (value) => setState(
+                              () => currentAgeInYr = value.toDouble(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      HeightScaleWidget(
                         isDarkTheme: false,
-                        currentWeightInKilogram: currentWeightInKilogram,
-                        scaleUnit: _scaleUnit,
-                        unitController: _unitController,
-                        onWeightChanged: (value) => setState(
-                          () => currentWeightInKilogram = value.toDouble(),
-                        ),
+                        unitController: _unitHeightController,
+                        scaleUnit: _scaleUnitHeight,
+                        currentHeightInKilogram: currentHeightInKilogram,
+                        onWeightChanged: (p0) {
+                          setState(() {
+                            currentHeightInKilogram = p0.toDouble();
+                          });
+                        },
                       ),
                       // WeightInKgNew(isDarkTheme: false),
                     ],
