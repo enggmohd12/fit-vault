@@ -11,14 +11,14 @@ class HeightScaleWidget extends StatelessWidget {
   final bool isDarkTheme;
   final ScaleController unitController;
   final ScaleUnit scaleUnit;
-  final double currentHeightInKilogram;
+  final double currentHeightinInches;
   final Function(num) onWeightChanged;
   const HeightScaleWidget({
     required this.isDarkTheme,
     super.key,
     required this.unitController,
     required this.scaleUnit,
-    required this.currentHeightInKilogram,
+    required this.currentHeightinInches,
     required this.onWeightChanged,
   });
 
@@ -26,9 +26,11 @@ class HeightScaleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final rulerBackgroundColor = isDarkTheme ? darkThemeColor : Colors.white;
     final textColor = isDarkTheme ? Colors.grey : Colors.black54;
-    double boxSize =
-        MediaQuery.of(context).size.width * 0.41; // 70% of screen width
+
     Size size = MediaQuery.of(context).size;
+    double boxSize = size.width > 800
+        ? size.width * 0.26
+        : size.width * 0.41; // 70% of screen width
     final containerHeight = boxSize * 2;
     return Container(
       height: containerHeight,
@@ -56,7 +58,7 @@ class HeightScaleWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12.0),
                   child: RichText(
                     text: TextSpan(
-                      text: currentHeightInKilogram.toStringAsFixed(0),
+                      text: currentHeightinInches.toStringAsFixed(0),
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 30,
@@ -73,7 +75,7 @@ class HeightScaleWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12.0),
                   child: RichText(
                     text: TextSpan(
-                      text: currentHeightInKilogram > 0 ? 'inches' : 'inch',
+                      text: currentHeightinInches > 0 ? 'inches' : 'inch',
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 16,
@@ -91,9 +93,9 @@ class HeightScaleWidget extends StatelessWidget {
           ),
           ClipRRect(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
+              topRight: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
             child: UnitRuler(
               height: containerHeight,
               width: boxSize * 0.5, // Adjust width for responsiveness
@@ -105,14 +107,18 @@ class HeightScaleWidget extends StatelessWidget {
               scalePadding: EdgeInsets.only(
                 left: 0,
                 right: 0,
-                top: size.width * 0.43,
+                top: size.width > 800
+                  ? size.width * 0.256
+                  : size.width * 0.43,
               ),
               scaleMarker: Container(
                 height: 2,
                 width: 100, // Adjust marker width for responsiveness
                 color: Colors.indigo,
               ),
-              scaleMarkerPositionTop: containerHeight / 1.87,
+              scaleMarkerPositionTop: size.width > 800
+                  ? containerHeight / 2
+                  : containerHeight / 1.87,
               scaleMarkerPositionLeft: 0,
               scaleIntervalText: (index, value) => value.toInt().toString(),
               scaleIntervalTextStyle: TextStyle(
