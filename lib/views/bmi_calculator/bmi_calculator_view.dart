@@ -1,13 +1,17 @@
+import 'dart:convert' show jsonEncode;
+import 'package:fitvault/components/sharedpreference_key.dart';
 import 'package:fitvault/views/bmi_calculator/components/age_scale_widget.dart'
     show AgeInYrWidget;
 import 'package:fitvault/views/bmi_calculator/components/height_scale_wiget.dart';
 import 'package:fitvault/views/bmi_calculator/components/male_female_container.dart';
 import 'package:fitvault/views/bmi_calculator/components/weight_scale_widget.dart';
-import 'package:fitvault/views/bmi_result/bmi_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unit_ruler/scale_controller.dart';
 import 'package:flutter_unit_ruler/scale_unit.dart' show ScaleUnit, UnitType;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
 
 class BMICalculatorView extends StatefulWidget {
   const BMICalculatorView({super.key});
@@ -46,10 +50,12 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onLongPress: () {
-            // print('Long Pressed on FitVault');
-            final size = MediaQuery.of(context).size;
-            print(size.width);
+          onLongPress: () async {
+            final prefs = await SharedPreferences.getInstance();
+            final isLoginSetupDone =
+                prefs.getBool(SharedPreferenceKey.isLoginSetupDone) ?? false;
+            if (isLoginSetupDone) {
+            } else {}
           },
           child: RichText(
             text: TextSpan(
@@ -197,41 +203,22 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                       final bmi =
                           weightInKg / (heightInMeters * heightInMeters);
                       final bmiRounded = bmi.toStringAsFixed(2);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BmiResultView(
-                            bmiResult: bmiRounded,
-                            gender: isSelected ? 'Male' : 'Female',
-                            weightInKg: weightInKg,
-                            heightInFeet: inchesToFeet(
+                      context.go(
+                        Uri(
+                          path: '/result',
+                          queryParameters: {
+                            'bmiResult': bmiRounded,
+                            'gender': isSelected ? 'Male' : 'Female',
+                            'weightInKg': weightInKg.toString(),
+                            'heightInFeet': inchesToFeet(
                               currentHeightinInches.toInt(),
-                            ).toString(),
-                            idealWeightRange: healthyWeightRange(
-                              currentHeightinInches,
                             ),
-                          ),
-                        ),
+                            'idealWeightRange': jsonEncode(
+                              healthyWeightRange(currentHeightinInches),
+                            ),
+                          },
+                        ).toString(),
                       );
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return AlertDialog(
-                      //       title: Text('Your BMI'),
-                      //       content: Text(
-                      //         'Your BMI is $bmiRounded',
-                      //       ),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).pop();
-                      //           },
-                      //           child: Text('OK'),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // );
                     },
                     child: RichText(
                       text: TextSpan(
