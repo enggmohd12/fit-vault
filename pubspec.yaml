@@ -40,6 +40,7 @@ dependencies:
   google_mobile_ads: ^6.0.0
   flutter_unit_ruler: ^1.0.1
   font_awesome_flutter: ^10.8.0
+  syncfusion_flutter_gauges: ^30.2.4
   
 
 dev_dependencies:
