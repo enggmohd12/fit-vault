@@ -3,6 +3,7 @@ import 'package:fitvault/views/bmi_calculator/components/age_scale_widget.dart'
 import 'package:fitvault/views/bmi_calculator/components/height_scale_wiget.dart';
 import 'package:fitvault/views/bmi_calculator/components/male_female_container.dart';
 import 'package:fitvault/views/bmi_calculator/components/weight_scale_widget.dart';
+import 'package:fitvault/views/bmi_result/bmi_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unit_ruler/scale_controller.dart';
 import 'package:flutter_unit_ruler/scale_unit.dart' show ScaleUnit, UnitType;
@@ -196,25 +197,41 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                       final bmi =
                           weightInKg / (heightInMeters * heightInMeters);
                       final bmiRounded = bmi.toStringAsFixed(2);
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Your BMI'),
-                            content: Text(
-                              'Your BMI is $bmiRounded',
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BmiResultView(
+                            bmiResult: bmiRounded,
+                            gender: isSelected ? 'Male' : 'Female',
+                            weightInKg: weightInKg,
+                            heightInFeet: inchesToFeet(
+                              currentHeightinInches.toInt(),
+                            ).toString(),
+                            idealWeightRange: healthyWeightRange(
+                              currentHeightinInches,
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
+                          ),
+                        ),
                       );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (context) {
+                      //     return AlertDialog(
+                      //       title: Text('Your BMI'),
+                      //       content: Text(
+                      //         'Your BMI is $bmiRounded',
+                      //       ),
+                      //       actions: [
+                      //         TextButton(
+                      //           onPressed: () {
+                      //             Navigator.of(context).pop();
+                      //           },
+                      //           child: Text('OK'),
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      // );
                     },
                     child: RichText(
                       text: TextSpan(
@@ -230,10 +247,29 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  String inchesToFeet(int inches) {
+    int feet = inches ~/ 12; // integer division
+    int remainingInches = inches % 12; // remainder inches
+    return "$feet' $remainingInches\""; // e.g., 5' 8"
+  }
+
+  Map<String, double> healthyWeightRange(double heightInches) {
+    double heightMeters = heightInches * 0.0254;
+    double minWeight = 18.5 * heightMeters * heightMeters;
+    double maxWeight = 24.9 * heightMeters * heightMeters;
+    return {
+      "min": double.parse(minWeight.toStringAsFixed(1)),
+      "max": double.parse(maxWeight.toStringAsFixed(1)),
+    };
   }
 }
