@@ -189,7 +189,7 @@ class BmiResultView extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Visibility(
                   visible:
-                      bmiResult.isNotEmpty && double.parse(bmiResult) >= 18.5,
+                      bmiResult.isNotEmpty && double.parse(bmiResult) >= 25 || double.parse(bmiResult) < 18.5,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
