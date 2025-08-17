@@ -2,7 +2,9 @@ import 'dart:convert' show jsonDecode;
 
 import 'package:fitvault/views/bmi_calculator/bmi_calculator_view.dart';
 import 'package:fitvault/views/bmi_result/bmi_result_view.dart';
-import 'package:go_router/go_router.dart' show GoRouter, GoRoute;
+import 'package:fitvault/views/login/login_view.dart';
+import 'package:fitvault/views/register/register_view.dart';
+import 'package:go_router/go_router.dart';
 
 final GoRouter approute = GoRouter(
   initialLocation: '/',
@@ -45,6 +47,14 @@ final GoRouter approute = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginView(),
+    ),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterView(),
     ),
   ],
 );
