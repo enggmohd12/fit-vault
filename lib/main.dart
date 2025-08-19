@@ -5,8 +5,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -15,6 +13,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        dialogTheme: DialogThemeData(
+          backgroundColor: Color(0xFFEEF0FF), // light indigo tint
+          surfaceTintColor: Colors.transparent, // keep color flat on M3
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16),
+            ),
+          ),
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF1A237E), // indigo900-ish
+            fontFamily: 'Poppins', // consistent font
+          ),
+          contentTextStyle: TextStyle(
+            fontSize: 14,
+            color: Color(0xFF303F9F), // indigo700-ish
+            fontFamily: 'Poppins', // consistent font
+          ),
+        ),
         primaryColor: Color(0xFF283593), // Deep Blue
         colorScheme:
             ColorScheme.fromSwatch(
