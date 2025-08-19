@@ -55,7 +55,14 @@ class _BMICalculatorViewState extends State<BMICalculatorView> {
             final isLoginSetupDone =
                 prefs.getBool(SharedPreferenceKey.isLoginSetupDone) ?? false;
             if (isLoginSetupDone) {
-            } else {}
+              if (context.mounted) {
+                context.go('/login');
+              }
+            } else {
+              if (context.mounted) {
+                context.go('/register');
+              }
+            }
           },
           child: RichText(
             text: TextSpan(
