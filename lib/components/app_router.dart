@@ -46,15 +46,15 @@ final GoRouter approute = GoRouter(
             );
           },
         ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => const LoginView(),
+        ),
+        GoRoute(
+          path: '/register',
+          builder: (context, state) => const RegisterView(),
+        ),
       ],
-    ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginView(),
-    ),
-    GoRoute(
-      path: '/register',
-      builder: (context, state) => const RegisterView(),
     ),
   ],
 );
