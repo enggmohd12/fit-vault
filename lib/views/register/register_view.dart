@@ -3,6 +3,7 @@ import 'package:fitvault/components/dialaogs/validation_dialog.dart';
 import 'package:fitvault/components/sharedpreference_key.dart';
 import 'package:fitvault/models/register_view/rule_item.dart';
 import 'package:fitvault/models/register_view/strength_enum.dart';
+import 'package:fitvault/services/credential_store.dart';
 import 'package:fitvault/views/register/components/check_list.dart';
 import 'package:fitvault/views/register/components/strength_bar.dart';
 import 'package:fitvault/views/register/validation/register_validation.dart';
@@ -11,7 +12,11 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  final CredentialStore credStore;
+  const RegisterView({
+    super.key,
+    required this.credStore,
+  });
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -397,6 +402,15 @@ class _RegisterViewState extends State<RegisterView> {
                             SharedPreferenceKey.isLoginSetupDone,
                             true,
                           );
+                          if (isLoginSetupDone) {
+                            await widget.credStore.register(
+                              userId: loginId.text,
+                              password: password.text,
+                            );
+                            if (context.mounted) {
+                              context.go('/lockerhome');
+                            }
+                          }
                         }
                       },
                       child: RichText(
