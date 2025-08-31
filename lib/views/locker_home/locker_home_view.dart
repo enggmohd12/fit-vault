@@ -1,7 +1,12 @@
+import 'package:fitvault/services/credential_store.dart';
 import 'package:flutter/material.dart';
 
 class LockerHomeView extends StatefulWidget {
-  const LockerHomeView({super.key});
+  final CredentialStore credStore;
+  const LockerHomeView({
+    super.key,
+    required this.credStore,
+  });
 
   @override
   State<LockerHomeView> createState() => _LockerHomeViewState();
