@@ -1,10 +1,17 @@
 import 'dart:io' show Platform;
 
+import 'package:fitvault/components/dialaogs/validation_dialog.dart';
+import 'package:fitvault/services/credential_store.dart';
+import 'package:fitvault/views/login/validation/login_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+  final CredentialStore credStore;
+  const LoginView({
+    super.key,
+    required this.credStore,
+  });
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -12,7 +19,9 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
+  final loginid = TextEditingController();
+  final password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -108,6 +117,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 15,
                         ),
                         TextField(
+                          controller: loginid,
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
                             hintText: 'Login ID',
@@ -132,6 +142,7 @@ class _LoginViewState extends State<LoginView> {
                           height: 20,
                         ),
                         TextField(
+                          controller: password,
                           cursorColor: Colors.white,
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: !isPasswordVisible,
@@ -202,7 +213,34 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         elevation: 8, // subtle shadow
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final validation = await validationLogin(
+                          loginId: loginid.text,
+                          password: password.text,
+                        );
+                        if (context.mounted) {
+                          if (!validation.$1) {
+                            await showValidationDialog(
+                              context: context,
+                              subTitle: validation.$2,
+                            );
+                          } else {
+                            final result = await widget.credStore.verify(
+                              password: password.text,
+                            );
+                            if (context.mounted) {
+                              if (result) {
+                                context.go('/lockerhome');
+                              } else {
+                                await showValidationDialog(
+                                  context: context,
+                                  subTitle: 'Invalid credentials',
+                                );
+                              }
+                            }
+                          }
+                        }
+                      },
                       child: RichText(
                         text: TextSpan(
                           text: "Login",
