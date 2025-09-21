@@ -28,6 +28,10 @@
 		<true/>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Access to your photo library is needed so you can select images and videos to organize and hide securely inside the app.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Access is needed to add photos or videos back to your library when you choose to save or unhide them from the app.</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
